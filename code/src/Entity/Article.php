@@ -7,11 +7,18 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ArticleRepository;
+use App\State\Provider\ArticleStateProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-#[ApiResource(operations: [new GetCollection(), new Post()])]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Get(provider: ArticleStateProvider::class)
+    ]
+)]
 class Article
 {
     #[ORM\Id]

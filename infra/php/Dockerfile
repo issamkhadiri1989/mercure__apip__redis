@@ -60,8 +60,8 @@ RUN pecl install xdebug-3.3.1 && \
     docker-php-ext-enable xdebug
 
 # Installer l'extension Redis
-#RUN pecl install redis && \
-#    docker-php-ext-enable redis
+RUN pecl install redis && \
+    docker-php-ext-enable redis
 
 # Installer MongoDB
 #RUN pecl install mongodb && docker-php-ext-enable mongodb

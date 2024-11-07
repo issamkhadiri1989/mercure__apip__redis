@@ -78,3 +78,48 @@ the endpoint `POST http://localhost/api/articles` is used to create new article.
 when the article is added to the database, a new notification is sent to `http://localhost`. the home page show the
 latest article added in real time.
 
+# Redis
+
+to test Redis, you need to check the endpoint `GET http://localhost/api/articles/{id}`. the idea is that at the first
+attempt, ApiPlatform gets the article from the database using the ORM state provider. next time we try to get the
+article, it will be retrieved from the Redis cache.
+
+check out the custom provider `src/State/Provider/ArticleStateProvider.php` which hooks the built-in ORM state provider.
+
+redis configuration is 
+
+```yaml 
+# config/packages/cache.yaml
+framework:
+    cache:
+        pools:
+            redis.cache:
+                adapter: cache.adapter.redis
+                provider: app.redis.provider
+
+# config/services.yaml
+services:
+    app.redis.provider:
+        class: \Redis
+        factory: ['Symfony\Component\Cache\Adapter\RedisAdapter', 'createConnection']
+        arguments:
+            - 'redis://redis'  # this must be set in an env var
+```
+
+use this provider as follows
+
+```php
+// code/src/Entity/Article.php
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Post(),
+        new Get(provider: ArticleStateProvider::class)
+    ]
+)]
+class Article
+{
+  ...
+}
+```
+
