@@ -23,7 +23,7 @@ in the `compose.yaml` file we have the following configuration
 
 ```
 
-in the `code/config/packages/mercure.yaml` file we are configuring the Mercure Bundle: 
+in the `code/config/packages/mercure.yaml` file we are configuring the Mercure Bundle:
 
 ```
 mercure:
@@ -38,7 +38,7 @@ mercure:
 
 ```
 
-for testing purposes, in the `.env` file we have 
+for testing purposes, in the `.env` file we have
 
 ```
 MERCURE_URL=http://mercure/.well-known/mercure
@@ -46,9 +46,9 @@ MERCURE_PUBLIC_URL=http://localhost:9999/.well-known/mercure
 MERCURE_JWT_SECRET="!ChangeThisMercureHubJWTSecretKey!"
 ```
 
-to test this configuration : 
+to test this configuration :
 
-in the **code/src/Controller/MercureController.php** we have 2 routes: 
+in the **code/src/Controller/MercureController.php** we have 2 routes:
 
 ```
     #[Route('/send-request', name: 'app_send_mercure_notification')]
@@ -66,10 +66,15 @@ in the **code/src/Controller/MercureController.php** we have 2 routes:
     }
 ```
 
-the `http://localhost/send-request` is used here to publish the event (suppose we got there some logic to send the notification)
+the `http://localhost/send-request` is used here to publish the event (suppose we got there some logic to send the
+notification)
 
 the page `http://localhost/` the page where the user will receive the notification in real time
 
 the JS code is written in the `code/templates/mercure/index.html.twig`.
 
+the endpoint `POST http://localhost/api/articles` is used to create new article.
+
+when the article is added to the database, a new notification is sent to `http://localhost`. the home page show the
+latest article added in real time.
 
